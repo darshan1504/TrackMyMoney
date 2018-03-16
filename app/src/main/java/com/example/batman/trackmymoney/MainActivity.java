@@ -1,9 +1,12 @@
 package com.example.batman.trackmymoney;
 
+import android.app.ProgressDialog;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -17,19 +20,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private CreateNewExpense createNewExpense;
+    private ShowExpenseSummary showExpenseSummary;
+
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -56,16 +61,11 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
+
 
     }
+
 
 
     @Override
@@ -90,39 +90,59 @@ public class MainActivity extends AppCompatActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-            return rootView;
-        }
-    }
+//    /**
+//     * A placeholder fragment containing a simple view.
+//     */
+//    public static class PlaceholderFragment extends Fragment {
+//        /**
+//         * The fragment argument representing the section number for this
+//         * fragment.
+//         */
+//        private static final String ARG_SECTION_NUMBER = "section_number";
+//
+//        public PlaceholderFragment() {
+//        }
+//
+//        /**
+//         * Returns a new instance of this fragment for the given section
+//         * number.
+//         */
+//        public static PlaceholderFragment newInstance(int sectionNumber) {
+//            PlaceholderFragment fragment = new PlaceholderFragment();
+//            Bundle args = new Bundle();
+//            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+//            fragment.setArguments(args);
+//            return fragment;
+//        }
+//
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savedInstanceState) {
+//
+//            View rootView = null;
+//
+//            switch(getArguments().getInt(ARG_SECTION_NUMBER))
+//            {
+//
+//                case 1:
+//                    //do something
+//                    rootView = inflater.inflate(R.layout.fragment_show_expense_summary, container, false);
+//
+//
+//                    break;
+//
+//                case 2:
+//                    //do somethings
+//                    rootView = inflater.inflate(R.layout.fragment_create_new_expense, container, false);
+//                    break;
+//            }
+//
+//
+//
+//
+//            return rootView;
+//        }
+//    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -136,14 +156,37 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position){
+
+                case 0:
+                    ShowExpenseSummary showExpenseSummary = new ShowExpenseSummary();
+                    return showExpenseSummary;
+
+                case 1:
+                    CreateNewExpense createNewExpense = new CreateNewExpense();
+                    return createNewExpense;
+
+                default:
+                    return null;
+
+            }
+        }
+
+        public CharSequence getPageTitle(int position){
+            switch (position){
+                case 0:
+                    return "Show Expense Summary";
+                case 1:
+                    return "Create New Expense";
+
+            }
+            return null;
+
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 2 total pages.
             return 2;
         }
     }
